@@ -14,7 +14,9 @@
             <input type="number" name="num2" class="form-control" placeholder="Num 2">
         </label>
     </div>
-    <button type="submit" class="btn btn-primary">Add</button>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
     {% if answer is not None %}
     <h3>Answer: {{ answer }}</h3>
     {% endif %}
