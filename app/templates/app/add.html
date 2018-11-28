@@ -1,7 +1,7 @@
 {% extends 'app/base.html' %}
 {% block body %}
 
-<form action="{% url 'app:add' %}" method="GET" role="form">
+<form action="{% url 'app:add' %}" method="GET" class="col-3">
     <div class="form-group">
         <label for="num1">Num 1</label>
         <input type="number" name="num1" class="form-control" placeholder="Num 1">
