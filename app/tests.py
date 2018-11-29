@@ -350,7 +350,70 @@ class TestHowPopulatedWithoutNumbers(SimpleTestCase):
     def test_a_divided_by_2(self):
         response = self.client.get(
             path=reverse('population'), data={
-                'populatin': 'a',
+                'population': 'a',
                 'area': '2'
             })
         self.assertTemplateUsed(response, 'app/population.html')
+
+    def test_empty_divided_by_empty(self):
+        response = self.client.get(
+            path=reverse('population'), data={
+                'population': 'a',
+                'area': '2'
+            })
+        self.assertTemplateUsed(response, 'app/population.html')
+
+    def test_a_divided_by_a(self):
+        response = self.client.get(
+            path=reverse('population'), data={
+                'population': 'a',
+                'area': 'a'
+            })
+        self.assertTemplateUsed(response, 'app/population.html')
+
+
+class TestGoldStar(SimpleTestCase):
+    """
+    displays a certain amount of stars depending on the score
+    """
+
+    def test_900(self):
+        response = self.client.get(
+            path=reverse('gold_star'), data={'score': '900'})
+        self.assertEqual(response.context['answer'], "*")
+
+    def test_2000(self):
+        response = self.client.get(
+            path=reverse('gold_star'), data={'score': '2000'})
+        self.assertEqual(response.context['answer'], "**")
+
+    def test_6000(self):
+        response = self.client.get(
+            path=reverse('gold_star'), data={'score': '6000'})
+        self.assertEqual(response.context['answer'], "***")
+
+    def test_9000(self):
+        response = self.client.get(
+            path=reverse('gold_star'), data={'score': '9000'})
+        self.assertEqual(response.context['answer'], "****")
+
+    def test_20000(self):
+        response = self.client.get(
+            path=reverse('gold_star'), data={'score': '20000'})
+        self.assertEqual(response.context['answer'], "*****")
+
+
+class TestGoldStar(SimpleTestCase):
+    """
+    without numbers, it should render gold_star.html without answer in the context
+    """
+
+    def test_a(self):
+        response = self.client.get(
+            path=reverse('gold_star'), data={'score': 'a'})
+        self.assertTemplateUsed(response, 'app/gold_star.html')
+
+    def test_empty(self):
+        response = self.client.get(
+            path=reverse('gold_star'), data={'score': ''})
+        self.assertTemplateUsed(response, 'app/gold_star.html')

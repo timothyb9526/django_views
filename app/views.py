@@ -86,3 +86,33 @@ class HowPopulated(View):
             else:
                 return render(request, 'app/population.html',
                               {'answer': 'Sparsely Populated'})
+
+
+class GoldStar(View):
+    def get(self, request):
+        try:
+            num = float(request.GET.get('score', ''))
+        except ValueError:
+            return render(request, 'app/gold_star.html')
+
+        else:
+            if num < 1000:
+                answer = "*"
+                return render(request, 'app/gold_star.html',
+                              {'answer': answer})
+            elif num < 5000 and num >= 1000:
+                answer = "**"
+                return render(request, 'app/gold_star.html',
+                              {'answer': answer})
+            elif num < 8000 and num >= 5000:
+                answer = "***"
+                return render(request, 'app/gold_star.html',
+                              {'answer': answer})
+            elif num < 10000 and num >= 8000:
+                answer = "****"
+                return render(request, 'app/gold_star.html',
+                              {'answer': answer})
+            elif num >= 10000:
+                answer = "*****"
+                return render(request, 'app/gold_star.html',
+                              {'answer': answer})
