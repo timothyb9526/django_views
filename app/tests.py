@@ -224,3 +224,64 @@ class TestMultiplyByThreeWithoutNumbers(SimpleTestCase):
             })
 
         self.assertTemplateUsed(response, 'app/multiply.html')
+
+
+class TestEarnings(SimpleTestCase):
+    """
+    determines the earnings provided how many a, b, c seats are sold
+    'a' seats are $15
+    'b' seats are $12
+    'c' seats are $9
+    """
+
+    def test_two_plus_two_plus_two(self):
+        response = self.client.get(
+            path=reverse('earnings'), data={
+                'a': '2',
+                'b': '2',
+                'c': '2'
+            })
+        self.assertEqual(response.context['answer'], 72)
+
+    def test_five_plus_one_plus_seven(self):
+        response = self.client.get(
+            path=reverse('earnings'), data={
+                'a': '5',
+                'b': '1',
+                'c': '7'
+            })
+        self.assertEqual(response.context['answer'], 150)
+
+    def test_ten_plus_two_fifteen(self):
+        response = self.client.get(
+            path=reverse('earnings'), data={
+                'a': '10',
+                'b': '2',
+                'c': '15'
+            })
+        self.assertEqual(response.context['answer'], 309)
+
+
+class TestEarningsWithoutNumbers(SimpleTestCase):
+    """
+    If the values are not numbers, it should render app/earnings.html
+    without the values in the context
+    """
+
+    def test_a_plus_two_plus_c(self):
+        response = self.client.get(
+            path=reverse('earnings'), data={
+                'a': 'a',
+                'b': '2',
+                'c': 'c'
+            })
+        self.assertTemplateUsed(response, 'app/earnings.html')
+
+    def test_a_plus_empty_plus_empty(self):
+        response = self.client.get(
+            path=reverse('earnings'), data={
+                'a': 'a',
+                'b': '',
+                'c': ''
+            })
+        self.assertTemplateUsed(response, 'app/earnings.html')

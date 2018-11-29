@@ -32,8 +32,21 @@ class MultThree(View):
             x = float(request.GET.get('x', ''))
             y = float(request.GET.get('y', ''))
             z = float(request.GET.get('z', ''))
-        except (ValueError, TypeError):
+        except ValueError:
             return render(request, 'app/multiply.html')
         else:
             answer = x * y * z
+            return render(request, 'app/multiply.html', {'answer': answer})
+
+
+class Earnings(View):
+    def get(self, request):
+        try:
+            a = float(request.GET.get('a', ''))
+            b = float(request.GET.get('b', ''))
+            c = float(request.GET.get('c', ''))
+        except ValueError:
+            return render(request, 'app/earnings.html')
+        else:
+            answer = a * 15 + b * 12 + c * 9
             return render(request, 'app/multiply.html', {'answer': answer})

@@ -1,0 +1,45 @@
+{% extends 'app/base.html' %} {% block body %}
+
+<form action="{% url 'earnings' %}" method="GET" class="col-3">
+    <div class="form-group">
+        <label>
+            Num 1
+            <input
+                type="number"
+                name="a"
+                class="form-control"
+                placeholder="number"
+            />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            Num 2
+            <input
+                type="number"
+                name="b"
+                class="form-control"
+                placeholder="number"
+            />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            Num 3
+            <input
+                type="number"
+                name="c"
+                class="form-control"
+                placeholder="number"
+            />
+        </label>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+    {% if answer is not None %}
+    <h3>Answer: {{ answer }}</h3>
+    {% endif %}
+</form>
+
+{% endblock body %}
