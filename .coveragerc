@@ -1,0 +1,5 @@
+[run]
+include=app/views.py
+
+[report]
+show_missing=True
