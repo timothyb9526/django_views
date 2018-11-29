@@ -252,7 +252,7 @@ class TestEarnings(SimpleTestCase):
             })
         self.assertEqual(response.context['answer'], 150)
 
-    def test_ten_plus_two_fifteen(self):
+    def test_ten_plus_two_plus_fifteen(self):
         response = self.client.get(
             path=reverse('earnings'), data={
                 'a': '10',

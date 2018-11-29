@@ -49,4 +49,4 @@ class Earnings(View):
             return render(request, 'app/earnings.html')
         else:
             answer = a * 15 + b * 12 + c * 9
-            return render(request, 'app/multiply.html', {'answer': answer})
+            return render(request, 'app/earnings.html', {'answer': answer})
