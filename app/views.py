@@ -5,8 +5,8 @@ from django.views import View
 class Add(View):
     def get(self, request):
         try:
-            num1 = float(request.GET.get('num1'))
-            num2 = float(request.GET.get('num2'))
+            num1 = float(request.GET.get('num1', ''))
+            num2 = float(request.GET.get('num2', ''))
         except ValueError:
             return render(request, 'app/add.html')
         else:
@@ -16,28 +16,24 @@ class Add(View):
 
 class Double(View):
     def get(self, request):
-        number = request.GET.get('number')
-        if number is not None:
-            try:
-                num = float(number)
-            except ValueError:
-                return render(request, 'app/double.html')
+        try:
+            num = float(request.GET.get('number', ''))
+        except ValueError:
+            return render(request, 'app/double.html')
+
+        else:
             answer = num * 2
             return render(request, 'app/double.html', {'answer': answer})
-        else:
-            return render(request, 'app/double.html')
 
 
 class MultThree(View):
     def get(self, request):
-        x = request.GET.get('x')
-        y = request.GET.get('y')
-        z = request.GET.get('z')
-        if x is not None and y is not None and z is None:
-            x = float(x)
-            y = float(y)
-            z = float(z)
+        try:
+            x = float(request.GET.get('x', ''))
+            y = float(request.GET.get('y', ''))
+            z = float(request.GET.get('z', ''))
+        except (ValueError, TypeError):
+            return render(request, 'app/multiply.html')
+        else:
             answer = x * y * z
             return render(request, 'app/multiply.html', {'answer': answer})
-        else:
-            return render(request, 'app/multiply.html')

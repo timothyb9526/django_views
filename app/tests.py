@@ -160,3 +160,67 @@ class TestDoubleWithoutNumbers(SimpleTestCase):
             path=reverse('double'), data={'number': 'foo'})
 
         self.assertTemplateUsed(response, 'app/double.html')
+
+
+class TestMultiplyByThree(SimpleTestCase):
+    """
+    if the values are numbers, it should render 
+    multiply.html with the three answers in the context
+    """
+
+    def test_one_times_three_times_two(self):
+        response = self.client.get(
+            path=reverse('multiply'), data={
+                'x': '1',
+                'y': '3',
+                'z': '2'
+            })
+
+        self.assertEqual(response.context['answer'], 6)
+
+    def test_one_times_three_times_zero(self):
+        response = self.client.get(
+            path=reverse('multiply'), data={
+                'x': '1',
+                'y': '3',
+                'z': '0'
+            })
+
+        self.assertEqual(response.context['answer'], 0)
+
+    def test_two_times_six_times_two(self):
+        response = self.client.get(
+            path=reverse('multiply'), data={
+                'x': '2',
+                'y': '6',
+                'z': '2'
+            })
+
+        self.assertEqual(response.context['answer'], 24)
+
+
+class TestMultiplyByThreeWithoutNumbers(SimpleTestCase):
+    """
+    if the values are not numbers, it should render 
+    multiply.html without the three answers in the context
+    """
+
+    def test_a_by_a_by_a(self):
+        response = self.client.get(
+            path=reverse('multiply'), data={
+                'x': 'a',
+                'y': 'a',
+                'z': 'a'
+            })
+
+        self.assertTemplateUsed(response, 'app/multiply.html')
+
+    def test_emoty_by_empty_by_empty(self):
+        response = self.client.get(
+            path=reverse('multiply'), data={
+                'x': '',
+                'y': '',
+                'z': ''
+            })
+
+        self.assertTemplateUsed(response, 'app/multiply.html')
