@@ -285,3 +285,72 @@ class TestEarningsWithoutNumbers(SimpleTestCase):
                 'c': ''
             })
         self.assertTemplateUsed(response, 'app/earnings.html')
+
+
+class TestTrueOrFalse(SimpleTestCase):
+    """
+    if the two values are equal to each other, 
+    it should render t_or_f.html with either true or false in the context
+    """
+
+    def test_true_and_true(self):
+        response = self.client.get(
+            path=reverse('t_or_f'), data={
+                'num1': 'true',
+                'num2': 'true'
+            })
+        self.assertEqual(response.context['answer'], True)
+
+    def test_false_and_true(self):
+        response = self.client.get(
+            path=reverse('t_or_f'), data={
+                'num1': 'false',
+                'num2': 'true'
+            })
+        self.assertTemplateUsed(response, 'app/t_or_f.html')
+
+    def test_false_and_false(self):
+        response = self.client.get(
+            path=reverse('t_or_f'), data={
+                'num1': 'false',
+                'num2': 'false'
+            })
+        self.assertEqual(response.context['answer'], False)
+
+
+class TestHowPopulated(SimpleTestCase):
+    """
+    calculate how populated an area is depending on the land_area and the population
+    """
+
+    def test_400_divided_by_5000(self):
+        response = self.client.get(
+            path=reverse('population'),
+            data={
+                'population': '400',
+                'area': '5000'
+            })
+        self.assertEqual(response.context['answer'], 'Sparsely Populated')
+
+    def test_20000_divided_by_2(self):
+        response = self.client.get(
+            path=reverse('population'),
+            data={
+                'population': '20000',
+                'area': '2'
+            })
+        self.assertEqual(response.context['answer'], 'Densely Populated')
+
+
+class TestHowPopulatedWithoutNumbers(SimpleTestCase):
+    """
+    Without numbers, it should render population.html without the answer in the context
+    """
+
+    def test_a_divided_by_2(self):
+        response = self.client.get(
+            path=reverse('population'), data={
+                'populatin': 'a',
+                'area': '2'
+            })
+        self.assertTemplateUsed(response, 'app/population.html')

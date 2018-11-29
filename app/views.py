@@ -50,3 +50,39 @@ class Earnings(View):
         else:
             answer = a * 15 + b * 12 + c * 9
             return render(request, 'app/earnings.html', {'answer': answer})
+
+
+class TrueOrFalse(View):
+    def get(self, request):
+        try:
+            num1 = request.GET.get('num1', '')
+            num2 = request.GET.get('num2', '')
+        except ValueError:
+            return render(request, 'app/t_or_f.html')
+        else:
+            if num1 == 'true' and num2 == 'true':
+                answer = True
+                return render(request, 'app/t_or_f.html', {'answer': answer})
+            elif num1 == 'false' and num2 == 'false':
+                answer = False
+                return render(request, 'app/t_or_f.html', {'answer': answer})
+            else:
+                return render(request, 'app/t_or_f.html')
+
+
+class HowPopulated(View):
+    def get(self, request):
+        try:
+            area = float(request.GET.get('area', ''))
+            population = float(request.GET.get('population', ''))
+        except ValueError:
+            return render(request, 'app/population.html')
+        else:
+            answer = population / area
+            if answer > 1000:
+
+                return render(request, 'app/population.html',
+                              {'answer': 'Densely Populated'})
+            else:
+                return render(request, 'app/population.html',
+                              {'answer': 'Sparsely Populated'})

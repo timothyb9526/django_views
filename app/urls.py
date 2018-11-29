@@ -5,5 +5,7 @@ urlpatterns = [
     path('add/', views.Add.as_view(), name='add'),
     path('double/', views.Double.as_view(), name='double'),
     path('multiply/', views.MultThree.as_view(), name='multiply'),
-    path('earnings/', views.Earnings.as_view(), name='earnings')
+    path('earnings/', views.Earnings.as_view(), name='earnings'),
+    path('t_or_f/', views.TrueOrFalse.as_view(), name='t_or_f'),
+    path('population/', views.HowPopulated.as_view(), name='population')
 ]
