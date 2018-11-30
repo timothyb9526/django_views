@@ -144,11 +144,17 @@ class TestDoubleCanDoubleRealNumbers(SimpleTestCase):
         self.assertEqual(response.context['answer'], -8)
 
 
-class TestDoubleWithoutNumbers(SimpleTestCase):
+class TestDoubleWithWronginputs(SimpleTestCase):
     """
     if you GET double with a value that is not a number, it should
     render double.html without the answer
     """
+
+    def test_negative_3(self):
+        response = self.client.get(
+            path=reverse('double'), data={'number': '-3'})
+
+        self.assertTemplateUsed(response, 'app/double.html')
 
     def test_empty_value(self):
         response = self.client.get(path=reverse('double'), data={'number': ''})
@@ -199,7 +205,7 @@ class TestMultiplyByThree(SimpleTestCase):
         self.assertEqual(response.context['answer'], 24)
 
 
-class TestMultiplyByThreeWithoutNumbers(SimpleTestCase):
+class TestMultiplyByThreeWithWronginputs(SimpleTestCase):
     """
     if the values are not numbers, it should render 
     multiply.html without the three answers in the context
@@ -221,6 +227,16 @@ class TestMultiplyByThreeWithoutNumbers(SimpleTestCase):
                 'x': '',
                 'y': '',
                 'z': ''
+            })
+
+        self.assertTemplateUsed(response, 'app/multiply.html')
+
+    def test_negative_3_by_2_by_4(self):
+        response = self.client.get(
+            path=reverse('multiply'), data={
+                'x': '-3',
+                'y': '2',
+                'z': '4'
             })
 
         self.assertTemplateUsed(response, 'app/multiply.html')
@@ -286,6 +302,14 @@ class TestEarningsWithoutNumbers(SimpleTestCase):
             })
         self.assertTemplateUsed(response, 'app/earnings.html')
 
+    def test_negative_3_plus_2_plus_7(self):
+        response = self.client.get(
+            path=reverse('earnings'), data={
+                'a': '-3',
+                'b': '2',
+                'c': '7'
+            })
+        self.assertTemplateUsed(response, 'app/earnings.html')
 
 class TestTrueOrFalse(SimpleTestCase):
     """
@@ -341,6 +365,22 @@ class TestHowPopulated(SimpleTestCase):
             })
         self.assertEqual(response.context['answer'], 'Densely Populated')
 
+    def test_0_divided_by_0(self):
+        response = self.client.get(
+            path=reverse('population'), data={
+                'population': '0',
+                'area': '0'
+            })
+        self.assertTemplateUsed(response, 'app/population.html')
+
+    def test_negative_3_divided_by_negative_3(self):
+        response = self.client.get(
+            path=reverse('population'), data={
+                'population': '3',
+                'area': '3'
+            })
+        self.assertTemplateUsed(response, 'app/population.html')
+
 
 class TestHowPopulatedWithoutNumbers(SimpleTestCase):
     """
@@ -376,6 +416,11 @@ class TestGoldStar(SimpleTestCase):
     """
     displays a certain amount of stars depending on the score
     """
+
+    def test_negative_3(self):
+        response = self.client.get(
+            path=reverse('gold_star'), data={'score': '-3'})
+        self.assertTemplateUsed(response, 'app/gold_star.html')
 
     def test_900(self):
         response = self.client.get(
@@ -457,6 +502,11 @@ class TestScoringActionWithWrongInputs(SimpleTestCase):
             path=reverse('scoring_action'), data={'action': 'goal'})
         self.assertTemplateUsed(response, 'app/scoring_action.html')
 
+    def test_empty(self):
+        response = self.client.get(
+            path=reverse('scoring_action'), data={'action': ''})
+        self.assertTemplateUsed(response, 'app/scoring_action.html')
+
     def test_256(self):
         response = self.client.get(
             path=reverse('scoring_action'), data={'action': '256'})
@@ -490,5 +540,13 @@ class TestWalkOrDriveWithWrongInput(SimpleTestCase):
             data={
                 'miles': 'ff',
                 'weather': False
+            })
+        self.assertTemplateUsed(response, 'app/walk_or_drive.html')
+
+    def test_empty_and_true(self):
+        response = self.client.get(
+            path=reverse('walk_or_drive'), data={
+                'miles': '',
+                'weather': True
             })
         self.assertTemplateUsed(response, 'app/walk_or_drive.html')
