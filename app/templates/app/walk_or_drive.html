@@ -1,14 +1,21 @@
 {% extends 'app/base.html' %} {% block body %}
 
-<form action="{% url 't_or_f' %}" method="GET" class="col-3">
+<form action="{% url 'walk_or_drive' %}" method="GET" class="col-3">
     <div class="form-group">
         <label>
-            input1 <input type="checkbox" name="num1" class="form-control" />
+            input1
+            <input
+                type="number"
+                step="0.01"
+                name="miles"
+                class="form-control"
+                placeholder="miles"
+            />
         </label>
     </div>
     <div class="form-group">
         <label>
-            input2 <input type="checkbox" name="num2" class="form-control" />
+            input2 <input type="checkbox" name="weather" class="form-control" />
         </label>
     </div>
     <div class="form-group">

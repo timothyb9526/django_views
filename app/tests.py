@@ -215,7 +215,7 @@ class TestMultiplyByThreeWithoutNumbers(SimpleTestCase):
 
         self.assertTemplateUsed(response, 'app/multiply.html')
 
-    def test_emoty_by_empty_by_empty(self):
+    def test_empty_by_empty_by_empty(self):
         response = self.client.get(
             path=reverse('multiply'), data={
                 'x': '',
@@ -403,7 +403,7 @@ class TestGoldStar(SimpleTestCase):
         self.assertEqual(response.context['answer'], "*****")
 
 
-class TestGoldStar(SimpleTestCase):
+class TestGoldStarWithoutNumbers(SimpleTestCase):
     """
     without numbers, it should render gold_star.html without answer in the context
     """
@@ -417,3 +417,78 @@ class TestGoldStar(SimpleTestCase):
         response = self.client.get(
             path=reverse('gold_star'), data={'score': ''})
         self.assertTemplateUsed(response, 'app/gold_star.html')
+
+
+class TestScoringAction(SimpleTestCase):
+    """
+    Gives extra points depending on the type of scoring action is played
+    """
+
+    def test_extra_kick(self):
+        response = self.client.get(
+            path=reverse('scoring_action'), data={'action': 'extra kick'})
+        self.assertEqual(response.context['answer'], 1)
+
+    def test_extra_conversion(self):
+        response = self.client.get(
+            path=reverse('scoring_action'),
+            data={'action': 'extra conversion'})
+        self.assertEqual(response.context['answer'], 2)
+
+    def test_safety(self):
+        response = self.client.get(
+            path=reverse('scoring_action'), data={'action': 'safety'})
+        self.assertEqual(response.context['answer'], 2)
+
+    def test_fg(self):
+        response = self.client.get(
+            path=reverse('scoring_action'), data={'action': 'fg'})
+        self.assertEqual(response.context['answer'], 3)
+
+    def test_td(self):
+        response = self.client.get(
+            path=reverse('scoring_action'), data={'action': 'td'})
+        self.assertEqual(response.context['answer'], 6)
+
+
+class TestScoringActionWithWrongInputs(SimpleTestCase):
+    def test_goal(self):
+        response = self.client.get(
+            path=reverse('scoring_action'), data={'action': 'goal'})
+        self.assertTemplateUsed(response, 'app/scoring_action.html')
+
+    def test_256(self):
+        response = self.client.get(
+            path=reverse('scoring_action'), data={'action': '256'})
+        self.assertTemplateUsed(response, 'app/scoring_action.html')
+
+
+class TestWalkOrDrive(SimpleTestCase):
+    def test_24_and_true(self):
+        response = self.client.get(
+            path=reverse('walk_or_drive'),
+            data={
+                'miles': '.20',
+                'weather': True
+            })
+        self.assertEqual(response.context['answer'], 'walk')
+
+    def test_50_and_true(self):
+        response = self.client.get(
+            path=reverse('walk_or_drive'),
+            data={
+                'miles': '.50',
+                'weather': True
+            })
+        self.assertEqual(response.context['answer'], 'drive')
+
+
+class TestWalkOrDriveWithWrongInput(SimpleTestCase):
+    def test_ff_and_false(self):
+        response = self.client.get(
+            path=reverse('walk_or_drive'),
+            data={
+                'miles': 'ff',
+                'weather': False
+            })
+        self.assertTemplateUsed(response, 'app/walk_or_drive.html')
